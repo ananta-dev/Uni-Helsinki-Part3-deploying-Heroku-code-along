@@ -2,7 +2,6 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const { response } = require("express");
 const Note = require("./models/note");
 
 const requestLogger = (request, response, next) => {
@@ -48,8 +47,6 @@ app.post("/api/notes", (request, response) => {
     note.save().then(savedNote => {
         response.json(savedNote);
     });
-
-    response.json(note);
 });
 
 app.get("/api/notes", (req, res) => {
@@ -93,7 +90,10 @@ const unknownEndpoint = (request, response) => {
 
 app.use(unknownEndpoint);
 
+const myUrl = process.env.MONGODB_URL;
+
 const PORT = process.env.PORT;
+
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
